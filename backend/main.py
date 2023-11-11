@@ -72,7 +72,7 @@ async def query_fluxdb():
     print("Querying FluxDB...")
 
     query = 'from(bucket:"{}")\
-    |> range(start: -5h)\
+    |> range(start: -5s)\
     |> filter(fn:(r) => r._measurement == "movement_sensor_data")\
     |> filter(fn:(r) => r._field == "temperature" or r._field == "humidity" or r._field == "iaq" or r._field == "co2" or r._field == "gas" or r._field == "battery")\
     |> keep(columns: ["_time", "_field", "_value"])'.format(BUCKET)
@@ -107,6 +107,9 @@ async def query_fluxdb():
         pre_df.append((unix_time, values['temperature'], values['humidity'], values['iaq'], values['co2'], values['gas'], values['battery']))
     
     df = pd.DataFrame(pre_df, columns=['timestamp', 'temperature', 'humidity', 'iaq', 'co2', 'gas', 'battery'])
+    
+    # make distinct on timestamp
+    df = df.drop_duplicates(subset=['timestamp'])
 
 
     print(df.head())
