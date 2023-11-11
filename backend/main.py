@@ -72,7 +72,7 @@ async def query_fluxdb():
     print("Querying FluxDB...")
 
     query = 'from(bucket:"{}")\
-    |> range(start: -5s)\
+    |> range(start: -10s)\
     |> filter(fn:(r) => r._measurement == "movement_sensor_data")\
     |> filter(fn:(r) => r._field == "temperature" or r._field == "humidity" or r._field == "iaq" or r._field == "co2" or r._field == "gas" or r._field == "battery")\
     |> keep(columns: ["_time", "_field", "_value"])'.format(BUCKET)
@@ -162,6 +162,33 @@ def query_sensor_data_postgres(timestamp: int):
     # close the connection
     conn.close()
     return results
+
+
+@app.get("/get_prediction")
+def get_prediction():
+    """
+    Queries the PostgreSQL database for prediction data.
+    The function retrieves data from the PostgreSQL database and returns it as a JSON object.
+    The data is filtered by the fields timestamp, prediction, and confidence.
+    The function returns a JSON object containing the prediction data.
+    """
+    print("Querying PostgreSQL database...")
+    # create a database connection
+    conn = engine.connect()
+    # create a SELECT statement
+    select_sql = """
+    SELECT * FROM consumption_prediction
+    """
+    # execute the SELECT statement
+    rs = conn.execute(select_sql)
+    # return all results as a JSON list
+    results = [dict(row) for row in rs]
+    print(results)
+    # close the connection
+    conn.close()
+    return results
+
+
 
 
 
