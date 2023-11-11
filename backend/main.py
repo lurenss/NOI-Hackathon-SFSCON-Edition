@@ -115,7 +115,7 @@ async def query_fluxdb():
     print(df.head())
 
 
-    # Prepare the raw SQL for insertion with ON CONFLICT clause
+    # Prepare the raw SQL for insertion 2with ON CONFLICT clause
     insert_sql = """
     INSERT INTO sensor_data (timestamp, temperature, humidity, iaq, co2, gas, battery)
     VALUES (%s, %s, %s, %s, %s, %s, %s)
