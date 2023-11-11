@@ -63,7 +63,12 @@ def read_root():
 
 @app.get("/fetch_data_and_store")
 async def query_fluxdb():
-
+    """
+    Queries FluxDB for sensor data and stores it in a PostgreSQL database.
+    The function retrieves data from the FluxDB database, parses it, and stores it in a PostgreSQL database.
+    The data is filtered by the fields temperature, humidity, iaq, co2, gas, and battery.
+    The function returns a message indicating whether the data was successfully fetched and stored in the database.
+    """
     print("Querying FluxDB...")
 
     query = 'from(bucket:"{}")\
@@ -120,11 +125,41 @@ async def query_fluxdb():
             for row in df.itertuples(index=False):
                 conn.execute(insert_sql, row)
         print("Data inserted successfully")
+        # close the connection
+        conn.close()
         return {"message": "Data fetched and stored in the database."}
     except Exception as e:
         print(f"An error occurred while inserting data into the database: {e}")
 
     return {"message": "Data fetched and stored in the database."}
+
+# get sensor data from  sensor_data tables in postgresdb and takes as input  from which timestamp to start
+@app.get("/get_sensor_data")
+def query_sensor_data_postgres(timestamp: int):
+    """
+    Queries the PostgreSQL database for sensor data.
+    The function retrieves data from the PostgreSQL database and returns it as a JSON object.
+    The data is filtered by the fields temperature, humidity, iaq, co2, gas, and battery.
+    The function returns a JSON object containing the sensor data.
+    """
+    print("Querying PostgreSQL database...")
+    # create a database connection
+    conn = engine.connect()
+    # create a SELECT statement
+    select_sql = """
+    SELECT * FROM sensor_data
+    WHERE timestamp >= %s
+    ORDER BY timestamp ASC
+    """
+    # execute the SELECT statement
+    rs = conn.execute(select_sql, timestamp)
+    # return all results as a JSON list
+    results = [dict(row) for row in rs]
+    print(results)
+    # close the connection
+    conn.close()
+    return results
+
 
 
 
