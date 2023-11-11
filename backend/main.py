@@ -1,0 +1,87 @@
+"""
+This module contains a FastAPI application that queries data from InfluxDB.
+"""
+
+from fastapi import FastAPI
+import aiohttp
+from aiohttp import ClientSession
+import pandas as pd
+
+from decouple import config
+import influxdb_client
+from influxdb_client.client.write_api import SYNCHRONOUS
+
+from collections import defaultdict
+
+FLUXDB_URL = config("INFLUXDB_URL")
+ORG = config("INFLUXDB_ORG")
+BUCKET = config("INFLUXDB_BUCKET")
+TOKEN = config("INFLUXDB_TOKEN")
+
+app = FastAPI()
+
+client = influxdb_client.InfluxDBClient(
+url=FLUXDB_URL,
+token=TOKEN,
+org=ORG
+)
+
+query_api = client.query_api()
+
+@app.get("/")
+def read_root():
+    """
+    Root endpoint that returns a simple greeting message for TESTING purposes.
+    """
+    return {"Hello": "World"}
+
+@app.get("/query_fluxdb/")
+async def query_fluxdb():
+    """
+    Endpoint that queries data from InfluxDB and returns the results.
+    """
+    print("Querying FluxDB...")
+
+    query = 'from(bucket:"{}")\
+    |> range(start: -1h)\
+    |> filter(fn:(r) => r._measurement == "movement_sensor_data")\
+    |> filter(fn:(r) => r._field == "temperature" or r._field == "humidity" or r._field == "iaq" or r._field == "co2" or r._field == "gas" or r._field == "battery")\
+    |> keep(columns: ["_time", "_field", "_value"])'.format(BUCKET)
+    
+    print(query)
+    
+    result = query_api.query(org=ORG, query=query)
+    #print("Result: {0}".format(result))
+
+    # parse results
+    paired_results = defaultdict(lambda: {'temperature': None, 'humidity': None, 'iaq': None, 'co2': None, 'gas': None, 'battery': None})
+    for table in result:
+        for record in table.records:
+            time = record.get_time()
+            if record.get_field() == 'temperature':
+                paired_results[time]['temperature'] = record.get_value()
+            elif record.get_field() == 'humidity':
+                paired_results[time]['humidity'] = record.get_value()
+            elif record.get_field() == 'iaq':
+                paired_results[time]['iaq'] = record.get_value()
+            elif record.get_field() == 'co2':
+                paired_results[time]['co2'] = record.get_value()
+            elif record.get_field() == 'gas':
+                paired_results[time]['gas'] = record.get_value()
+            elif record.get_field() == 'battery':
+                paired_results[time]['battery'] = record.get_value()
+
+    # Convert to desired format
+    pre_df = []
+    for time, values in paired_results.items():
+        unix_time = int(time.timestamp())
+        pre_df.append((unix_time, values['temperature'], values['humidity'], values['iaq'], values['co2'], values['gas'], values['battery']))
+    
+    df = pd.DataFrame(pre_df, columns=['timestamp', 'temperature', 'humidity', 'iaq', 'co2', 'gas', 'battery'])
+
+    # put this dataframe into a db
+
+    
+
+
+
