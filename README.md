@@ -1,5 +1,5 @@
 # NOI-Hackathon-SFSCON-Edition
-## NET-A-FOSS TEAM
+## NET-A-FOSS TEAM - Winner
 ![squarai-logo](assets/squarai-logo.png)
 ## Overview
 This project is developed for the NOI Hackathon SFSCON Edition. It focuses on creating an ecosystem that collects data from various sensors located inside company offices, processes this data, and uses it to forecast power consumption. The primary aim is to increase user awareness about energy consumption and encourage efficient energy usage.
@@ -31,3 +31,10 @@ This project is developed for the NOI Hackathon SFSCON Edition. It focuses on cr
 ## Goals
 - **Awareness**: Provide users with insights into their energy consumption patterns.
 - **Energy Efficiency**: Encourage efficient use of heating and other energy resources in office environments.
+
+## Team
+
+| ![Padoan_Lorenzo](assets/picture-padoan.jpg) | ![Perini_Marco](assets/picture-perini.jpg) | ![Raimondi_Marco](assets/picture-raimondi.jpg) |
+|:-----------------------------:|:------------------------------:|:------------------------------:|
+| **Padoan Lorenzo** <br> Research Fellow at UNIPD <br> [Linkedin](https://www.linkedin.com/in/lorenzo-padoan-4521a2154/) | **Perini Marco** <br> MSc Mechatronics Engineering at UNITN <br> [Linkedin](https://www.linkedin.com/in/perinim/) | **Raimondi Marco** <br> MSc Computer Engineering at UNIPD <br> [Linkedin](https://www.linkedin.com/in/marco-raimondi-731419145/) |
+
