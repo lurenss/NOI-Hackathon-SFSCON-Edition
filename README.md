@@ -34,7 +34,7 @@ This project is developed for the NOI Hackathon SFSCON Edition. It focuses on cr
 
 ## Team
 
-| ![Padoan_Lorenzo](assets/picture-padoan.jpg) | ![Perini_Marco](assets/picture-perini.jpg) | ![Raimondi_Marco](assets/picture-raimondi.jpg) |
+| <img src="assets/picture-padoan.jpeg" width="1000"> | <img src="assets/picture-perini.jpeg" width="920"> | <img src="assets/picture-raimondi.jpeg" width="950"> |
 |:-----------------------------:|:------------------------------:|:------------------------------:|
 | **Padoan Lorenzo** <br> Research Fellow at UNIPD <br> [Linkedin](https://www.linkedin.com/in/lorenzo-padoan-4521a2154/) | **Perini Marco** <br> MSc Mechatronics Engineering at UNITN <br> [Linkedin](https://www.linkedin.com/in/perinim/) | **Raimondi Marco** <br> MSc Computer Engineering at UNIPD <br> [Linkedin](https://www.linkedin.com/in/marco-raimondi-731419145/) |
 
