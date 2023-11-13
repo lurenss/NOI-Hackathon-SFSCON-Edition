@@ -1,6 +1,6 @@
 # NOI-Hackathon-SFSCON-Edition
 ## NET-A-FOSS TEAM
-
+![squarai-logo](assets/squarai-logo.png)
 ## Overview
 This project is developed for the NOI Hackathon SFSCON Edition. It focuses on creating an ecosystem that collects data from various sensors located inside company offices, processes this data, and uses it to forecast power consumption. The primary aim is to increase user awareness about energy consumption and encourage efficient energy usage.
 
